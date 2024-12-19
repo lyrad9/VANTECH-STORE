@@ -57,7 +57,8 @@ export function MultiSelectPermissions({
     },
     []
   );
-
+console.log(selected)
+console.log(permissions)
   const selectables = permissions.filter(
     (permission) => !selected.includes(permission)
   );

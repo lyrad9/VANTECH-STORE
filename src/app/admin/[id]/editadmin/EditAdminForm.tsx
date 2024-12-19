@@ -40,11 +40,15 @@ import { Loader2 } from "lucide-react";
 import { MultiSelectPermissions } from "../../../../../components/MultiSelectPermissions";
 export const EditAdminForm = ({ admin }: { admin: User }) => {
   type Role = Record<"id" | "label", string>;
-  const permissionsAdmin = admin.permissions.map((permission, _) => {
-    return { id: permission, label: permission };
-  });
+  // const permissionsAdmin = admin.permissions.map((permission, _) => {
+
+  //     return   { id: permission, label: permission };
+
+  // });
+
+  console.log(2);
   const [selectedPermissions, setSelectedPermissions] = React.useState<Role[]>(
-    permissionsAdmin 
+    []
   );
   console.log(selectedPermissions);
   console.log(selectedPermissions);
@@ -89,6 +93,15 @@ export const EditAdminForm = ({ admin }: { admin: User }) => {
   React.useEffect(() => {
     // admin.role === "ADMIN" ? setRole(true) : setRole(false);
     if (role === "ADMIN") {
+      const permissionAdmin = admin.permissions.map((permission, _) => {
+        return { id: permission, label: permission };
+      });
+      setSelectedPermissions(
+        permissionAdmin.filter(
+          (permission, _) => permission.id.toLowerCase() !== "all"
+        )
+      );
+
       setCustomValue(
         "permissions",
         admin.permissions.filter(
@@ -96,8 +109,10 @@ export const EditAdminForm = ({ admin }: { admin: User }) => {
         )
       );
     }
+
     if (role === "SUPERADMIN") {
       setCustomValue("permissions", []);
+      setSelectedPermissions([]);
     }
   }, [role, admin.permissions]);
   async function onSubmit(values: z.infer<typeof SchemaValidateAdmin>) {
@@ -117,7 +132,7 @@ export const EditAdminForm = ({ admin }: { admin: User }) => {
             </Link>
           </Button>
           <h1 className="flex-1 shrink-0  text-xl font-semibold tracking-tight text-blue-500">
-            Edit admin role & permissions
+            Edit admin role & permissionse
           </h1>
         </div>
         <Card className="w-full min-h-20 px-8 lg:px-16 py-4">
@@ -203,17 +218,17 @@ export const EditAdminForm = ({ admin }: { admin: User }) => {
                 />
                 {role === "ADMIN" && (
                   <div className="grid gap-3">
-                  <div className="mb-2">
-                    <p className="text-blue-500">Permissions</p>
-                    <p className="text-sm">Attribute permissions</p>
+                    <div className="mb-2">
+                      <p className="text-blue-500">Permissions</p>
+                      <p className="text-sm">Attribute permissions</p>
+                    </div>
+                    <MultiSelectPermissions
+                      setSelectedPermissions={setSelectedPermissions}
+                      selectedPermissions={selectedPermissions}
+                      permissions={Permissions}
+                      placeholder="select..."
+                    />
                   </div>
-                  <MultiSelectPermissions
-                    setSelectedPermissions={setSelectedPermissions}
-                    selectedPermissions={selectedPermissions}
-                    permissions={Permissions}
-                    placeholder="select..."
-                  />
-                </div>
 
                   // <FormField
                   //   control={form.control}

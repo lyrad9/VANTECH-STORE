@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Copy } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
-const CopyPasteButton = ({className}:{className:string}) => {
+
+const CopyPasteButton = ({className,}:{className:string}) => {
   const [copied, setCopied] = useState(false)
+ 
   const variants = {
     hidden: { opacity: 0, scale: 0.5 },
     visible: { opacity: 1, scale: 1 },
@@ -22,7 +24,10 @@ const CopyPasteButton = ({className}:{className:string}) => {
     <motion.button
     
       whileTap={{ scale: 0.9, opacity: 0.8 }}
-      onClick={() => setCopied(!copied)}
+      onClick={() => {
+        setCopied(!copied)
+     
+      }}
       className={clsx(
         "",
         className
